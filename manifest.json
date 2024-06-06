@@ -1,47 +1,46 @@
 {
-    "Actions": [
-      {
-        "Icon": "resources/actionIcon",
-        "Name": "Toggl",
-        "States": [
-          {
-            "Image": "resources/actionImageOn",
-            "TitleAlignment": "bottom",
-            "FontSize": 10
-          },
-          {
-            "Image": "resources/actionImageOff",
-            "TitleAlignment": "bottom",
-            "FontSize": 10
-          }
-        ],
-        "SupportedInMultiActions": true,
-        "Tooltip": "Hassle-free time tracking using the Elgato Stream Deck and Toggl",
-        "UUID": "io.moeritz.streamdeck.toggl"
-      }
-    ],
-    "SDKVersion": 2,
-    "Author": "tobimori",
-    "CodePath": "plugin/main.html",
-    "Description": "Hassle-free time tracking using the Elgato Stream Deck and Toggl.",
-    "Name": "Toggl",
-    "UUID": "io.moeritz.streamdeck.toggl",
-    "Icon": "resources/pluginIcon",
-    "PropertyInspectorPath": "pi/main_pi.html",
-    "URL": "https://moeritz.io",
-    "Version": "1.4.2",
-    "OS": [
-      {
-          "Platform": "mac",
-          "MinimumVersion" : "10.11"
-      },
-      {
-          "Platform": "windows",
-          "MinimumVersion" : "10"
-      }
-    ],
-    "Software":
-      {
-          "MinimumVersion" : "6.4"
-      }
-  }
+	"Actions": [
+		{
+			"Icon": "resources/actionIcon",
+			"Name": "Toggl",
+			"States": [
+				{
+					"Image": "resources/actionImageOn",
+					"TitleAlignment": "bottom",
+					"FontSize": 10
+				},
+				{
+					"Image": "resources/actionImageOff",
+					"TitleAlignment": "bottom",
+					"FontSize": 10
+				}
+			],
+			"SupportedInMultiActions": true,
+			"Tooltip": "Hassle-free time tracking using the Elgato Stream Deck and Toggl",
+			"UUID": "one.blueshift.streamdeck.toggl"
+		}
+	],
+	"SDKVersion": 2,
+	"Author": "Blueshift",
+	"CodePath": "plugin/main.html",
+	"Description": "Hassle-free time tracking using the Elgato Stream Deck and Toggl.",
+	"Name": "Toggl",
+	"UUID": "one.blueshift.streamdeck.toggl",
+	"Icon": "resources/pluginIcon",
+	"PropertyInspectorPath": "pi/main_pi.html",
+	"URL": "https://github.com/blueshiftone/streamdeck-toggl",
+	"Version": "1.5.1.0",
+	"OS": [
+		{
+			"Platform": "mac",
+			"MinimumVersion": "10.11"
+		},
+		{
+			"Platform": "windows",
+			"MinimumVersion": "10"
+		}
+	],
+	"Software": {
+		"MinimumVersion": "6.4"
+	}
+}
