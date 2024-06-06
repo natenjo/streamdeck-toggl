@@ -5,7 +5,7 @@ html {
     --sdpi-bordercolor: #3a3a3a;
     --sdpi-borderradius: 0px;
     --sdpi-width: 224px;
-    --sdpi-fontweight: 600;
+    --sdpi-fontweight: 400;
     --sdpi-letterspacing: -0.25pt;
     height: 100%;
     width: 100%;
@@ -78,7 +78,7 @@ html {
   input,
   select,
   button {
-    font-size: 10pt;
+    font-size: 9pt;
     font-weight: var(--sdpi-fontweight);
     letter-spacing: var(--sdpi-letterspacing);
   }
@@ -326,8 +326,9 @@ html {
     text-align: right;
     flex: none;
     width: 90px;
+    margin-top: 10px;
     padding-right: 4px;
-    font-weight: 600;
+    font-weight: 400;
     -webkit-user-select: none;
   }
   
@@ -537,7 +538,7 @@ html {
   
   details.message summary {
     font-size: 10pt;
-    font-weight: 600;
+    font-weight: 400;
     min-height: 18px;
   }
   
