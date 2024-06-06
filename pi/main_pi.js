@@ -133,14 +133,19 @@ async function updateWorkspaces (apiToken) {
 }
 
 async function getProjects (apiToken, workspaceId) {
-  const response = await fetch(
-    `${togglBaseUrl}/workspaces/${workspaceId}/projects`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Basic ${btoa(`${apiToken}:api_token`)}`
-      }
-    })
-  const data = await response.json()
+  let data = [];
+  for(let page = 1; page <= 100; page++) {
+    const response = await fetch(
+      `${togglBaseUrl}/workspaces/${workspaceId}/projects?&page=${page}&per_page=200`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Basic ${btoa(`${apiToken}:api_token`)}`
+        }
+      })
+    const responseData = await response.json()
+    if (responseData.length == 0) break
+    data = data.concat(responseData)
+  }
   return data
 }
 
