@@ -28,6 +28,26 @@ Please use GitHub Issues for reporting bugs and requesting new features.
 
 streamdeck-toggl is licensed under the [MIT License](LICENSE).
 
+## Build & Debug Instructions
+
+Prerequisites:
+* Ensure your root folder as one.blueshift.streamdeck.toggl.sdPlugin
+* Install the [Elgato CLI](https://www.npmjs.com/package/@elgato/cli)
+* Enable developer mode with `streamdeck dev`
+
+To debug locally:
+```
+cd [path]\one.blueshift.streamdeck.toggl.sdPlugin
+streamdeck link
+streamdeck restart one.blueshift.streamdeck.toggl
+```
+
+To build a .streamDeckPlugin installer:
+```
+cd [path]\one.blueshift.streamdeck.toggl.sdPlugin
+streamdeck pack --version [new version] --output [output directory]
+```
+
 ## Known Issues
 
 * Changing the *Button Label* wont change the *Title* immediately. Restart Stream Deck.
