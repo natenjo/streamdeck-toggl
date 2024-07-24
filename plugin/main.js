@@ -83,10 +83,9 @@ function refreshButtons() {
       currentButtons.forEach((settings, context) => {
         if (apiToken != settings.apiToken) //not one of "our" buttons
           return //We're in a forEach, this is effectively a 'continue'
-
         if (entryData //Does button match the active timer?
             && entryData.wid == settings.workspaceId
-            && entryData.pid == settings.projectId
+            && (entryData.pid ?? 0) == settings.projectId
             && entryData.description == settings.activity) {
           setState(context, 0)
           setTitle(context, `${formatElapsed(entryData.start)}\n\n\n${settings.label}`)
@@ -127,7 +126,7 @@ async function toggle(context, settings) {
     if (!entryData) {
       //Not running? Start a new one
       startEntry(apiToken, activity, workspaceId, projectId, billableToggle).then(v=>refreshButtons())
-    } else if (entryData.wid == workspaceId && entryData.pid == projectId && entryData.description == activity) {
+    } else if (entryData.wid == workspaceId && (entryData.pid ?? 0) == projectId && entryData.description == activity) {
       //The one running is "this one" -- toggle to stop
       stopEntry(apiToken, entryData.id, workspaceId).then(v=>refreshButtons())
     } else {
@@ -141,6 +140,15 @@ async function toggle(context, settings) {
 
 function startEntry(apiToken = isRequired(), activity = 'Time Entry created by Toggl for Stream Deck', workspaceId = 0, projectId = 0, billableToggle = false) {
   const date = new Date();
+  const body = {
+    start: date.toISOString().substring(0,19) + "Z",
+    description: activity,
+    wid: Number(workspaceId),
+    billable: billableToggle,
+    created_with: 'Stream Deck',
+    duration: -1
+  };
+  if (projectId && projectId != 0) body.pid = Number(projectId);
   return fetch(
     `${togglBaseUrl}/workspaces/${workspaceId}/time_entries`, {
     method: 'POST',
@@ -148,15 +156,7 @@ function startEntry(apiToken = isRequired(), activity = 'Time Entry created by T
       'Content-Type': 'application/json',
       Authorization: `Basic ${btoa(`${apiToken}:api_token`)}`
     },
-    body: JSON.stringify({
-      start: date.toISOString().substring(0,19) + "Z",
-      description: activity,
-      wid: Number(workspaceId),
-      pid: Number(projectId),
-      billable: billableToggle,
-      created_with: 'Stream Deck',
-      duration: -1
-    })
+    body: JSON.stringify(body)
   })
 }
 
