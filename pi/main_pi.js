@@ -39,14 +39,23 @@ function connectElgatoStreamDeckSocket (inPort, inPropertyInspectorUUID, inRegis
       const apiToken = document.getElementById('apitoken').value
 
       document.querySelector('.hiddenAll').classList.remove('hiddenAll')
+
       apiToken && updateWorkspaces(apiToken).then(e => {
-        if (payload.workspaceId) document.getElementById('wid').value = payload.workspaceId
+        if (payload.workspaceId) {
+          document.getElementById('wid').value = payload.workspaceId
 
-        updateProjects(apiToken, payload.workspaceId).then(e => {
-          if (payload.projectId) document.getElementById('pid').value = payload.projectId
+          updateProjects(apiToken, payload.workspaceId).then(e => {
+            if (payload.projectId) {
+              document.getElementById('pid').value = payload.projectId
 
-          document.getElementById('activityWrapper').classList.remove('hidden')
-        })
+              updateTasks(apiToken, payload.workspaceId, payload.projectId).then(e => {
+                if (payload.taskId)
+                  document.getElementById('tid').value = payload.taskId
+
+              })
+            }
+          })
+        }
       })
     }
   }
@@ -63,6 +72,7 @@ function sendSettings () {
       activity: document.getElementById('activity').value,
       workspaceId: document.getElementById('wid').value,
       projectId: document.getElementById('pid').value,
+      taskId: document.getElementById('tid').value,
       billableToggle: document.getElementById('billable').value == 1 ?  true : false
     }
   }))
@@ -81,26 +91,49 @@ function setWorkspace () {
   sendSettings()
 }
 
+function setProject () {
+  updateTasks(document.getElementById('apitoken').value, document.getElementById('wid').value, document.getElementById('pid').value)
+  sendSettings()
+}
+
+async function updateTasks (apiToken, workspaceId, projectId) {
+  try {
+    await getTasks(apiToken, workspaceId, projectId).then(tasksData => {
+      document.getElementById('tid').innerHTML = '<option value="0"></option>'
+      document.getElementById('taskWrapper').classList.remove('hidden')
+      const selectEl = document.getElementById('tid')
+
+      for (taskNum in tasksData) {
+        const optionEl = document.createElement('option')
+        optionEl.innerText = tasksData[taskNum].name
+        optionEl.value = tasksData[taskNum].id.toString()
+        selectEl.append(optionEl)
+      }
+    })
+  } catch (e) {
+    document.getElementById('taskWrapper').classList.add('hidden')
+  }
+}
+
 async function updateProjects (apiToken, workspaceId) {
   try {
     await getProjects(apiToken, workspaceId).then(projectsData => {
       document.getElementById('pid').innerHTML = '<option value="0"></option>'
-      document.getElementById('workspaceError').classList.add('hiddenError')
       document.getElementById('projectWrapper').classList.remove('hidden')
       document.getElementById('billableWrapper').classList.remove('hidden')
       const selectEl = document.getElementById('pid')
 
       for (projectNum in projectsData) {
         const optionEl = document.createElement('option')
-        optionEl.innerText = projectsData[projectNum].name
+        optionEl.innerText = projectsData[projectNum].name + ` (${projectsData[projectNum].status})`
         optionEl.value = projectsData[projectNum].id.toString()
         selectEl.append(optionEl)
       }
     })
   } catch (e) {
+    document.getElementById('taskWrapper').classList.add('hidden')
     document.getElementById('projectWrapper').classList.add('hidden')
     document.getElementById('billableWrapper').classList.add('hidden')
-    document.getElementById('workspaceError').classList.remove('hiddenError')
   }
 }
 
@@ -127,9 +160,27 @@ async function updateWorkspaces (apiToken) {
     document.getElementById('labelWrapper').classList.add('hidden')
     document.getElementById('activityWrapper').classList.add('hidden')
     document.getElementById('projectWrapper').classList.add('hidden')
+    document.getElementById('taskWrapper').classList.add('hidden')
     document.getElementById('workspaceError').classList.add('hiddenError')
     console.log(e)
   }
+}
+
+async function getTasks (apiToken, workspaceId, projectId) {
+  let data = [];
+
+  const response = await fetch(
+      `${togglBaseUrl}/workspaces/${workspaceId}/projects/${projectId}/tasks`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Basic ${btoa(`${apiToken}:api_token`)}`
+        }
+      })
+  const responseData = await response.json()
+  if (responseData.length == 0) return
+  data = data.concat(responseData)
+
+  return data
 }
 
 async function getProjects (apiToken, workspaceId) {
