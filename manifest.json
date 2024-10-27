@@ -26,11 +26,12 @@
 	"Description": "Hassle-free time tracking using the Elgato Stream Deck and Toggl.",
 	"Name": "Toggl",
 	"Category": "Toggl",
+	"CategoryIcon": "resources/pluginIcon",
 	"UUID": "one.blueshift.streamdeck.toggl",
 	"Icon": "resources/pluginIcon",
 	"PropertyInspectorPath": "pi/main_pi.html",
 	"URL": "https://github.com/blueshiftone/streamdeck-toggl",
-	"Version": "1.5.4.0",
+	"Version": "1.5.5.0",
 	"OS": [
 		{
 			"Platform": "mac",

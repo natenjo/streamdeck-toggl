@@ -103,9 +103,11 @@ async function updateTasks (apiToken, workspaceId, projectId) {
       document.getElementById('taskWrapper').classList.remove('hidden')
       const selectEl = document.getElementById('tid')
 
+      if (tasksData != null) tasksData.sort((a, b) => { return (a.active === b.active) ? 0 : a.active ? -1 : 1; });
+
       for (taskNum in tasksData) {
         const optionEl = document.createElement('option')
-        optionEl.innerText = tasksData[taskNum].name
+        optionEl.innerText = tasksData[taskNum].name + (tasksData[taskNum].active ? `` : ` (Done)`)
         optionEl.value = tasksData[taskNum].id.toString()
         selectEl.append(optionEl)
       }
@@ -119,13 +121,16 @@ async function updateProjects (apiToken, workspaceId) {
   try {
     await getProjects(apiToken, workspaceId).then(projectsData => {
       document.getElementById('pid').innerHTML = '<option value="0"></option>'
+      document.getElementById('workspaceError').classList.add('hiddenError')
       document.getElementById('projectWrapper').classList.remove('hidden')
       document.getElementById('billableWrapper').classList.remove('hidden')
       const selectEl = document.getElementById('pid')
 
+      if (projectsData != null) projectsData.sort((a, b) => { return (a.active === b.active) ? 0 : a.active ? -1 : 1; });
+
       for (projectNum in projectsData) {
         const optionEl = document.createElement('option')
-        optionEl.innerText = projectsData[projectNum].name + ` (${projectsData[projectNum].status})`
+        optionEl.innerText = projectsData[projectNum].name + (projectsData[projectNum].active ? `` : ` (Archived)`)
         optionEl.value = projectsData[projectNum].id.toString()
         selectEl.append(optionEl)
       }
