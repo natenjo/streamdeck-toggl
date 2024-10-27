@@ -84,8 +84,9 @@ function refreshButtons() {
         if (apiToken != settings.apiToken) //not one of "our" buttons
           return //We're in a forEach, this is effectively a 'continue'
         if (entryData //Does button match the active timer?
-            && entryData.wid == settings.workspaceId
-            && (entryData.pid ?? 0) == settings.projectId
+            && entryData.workspace_id == settings.workspaceId
+            && (entryData.project_id ?? 0) == settings.projectId
+            && (entryData.task_id ?? 0) == settings.taskId
             && entryData.description == settings.activity) {
           setState(context, 0)
           setTitle(context, `${formatElapsed(entryData.start)}\n\n\n${settings.label}`)
@@ -120,25 +121,25 @@ function leadingZero(val)
 }
 
 async function toggle(context, settings) {
-  const { apiToken, activity, projectId, workspaceId, billableToggle } = settings
+  const { apiToken, activity, taskId, projectId, workspaceId, billableToggle } = settings
 
   getCurrentEntry(apiToken).then(entryData => {
     if (!entryData) {
       //Not running? Start a new one
-      startEntry(apiToken, activity, workspaceId, projectId, billableToggle).then(v=>refreshButtons())
-    } else if (entryData.wid == workspaceId && (entryData.pid ?? 0) == projectId && entryData.description == activity) {
+      startEntry(apiToken, activity, workspaceId, projectId, taskId, billableToggle).then(v=>refreshButtons())
+    } else if (entryData.workspace_id == workspaceId && (entryData.project_id ?? 0) == projectId && (entryData.task_id ?? 0) == taskId && entryData.description == activity) {
       //The one running is "this one" -- toggle to stop
       stopEntry(apiToken, entryData.id, workspaceId).then(v=>refreshButtons())
     } else {
       //Just start the new one, old one will stop, it's toggl.
-      startEntry(apiToken, activity, workspaceId, projectId, billableToggle).then(v=>refreshButtons())
+      startEntry(apiToken, activity, workspaceId, projectId, taskId, billableToggle).then(v=>refreshButtons())
     }
   })
 }
 
 // Toggl API Helpers
 
-function startEntry(apiToken = isRequired(), activity = 'Time Entry created by Toggl for Stream Deck', workspaceId = 0, projectId = 0, billableToggle = false) {
+function startEntry(apiToken = isRequired(), activity = 'Time Entry created by Toggl for Stream Deck', workspaceId = 0, projectId = 0, taskId = 0, billableToggle = false) {
   const date = new Date();
   const body = {
     start: date.toISOString().substring(0,19) + "Z",
@@ -148,7 +149,8 @@ function startEntry(apiToken = isRequired(), activity = 'Time Entry created by T
     created_with: 'Stream Deck',
     duration: -1
   };
-  if (projectId && projectId != 0) body.pid = Number(projectId);
+  if (projectId && projectId != 0) body.project_id = Number(projectId);
+  if (taskId && taskId != 0) body.task_id = Number(taskId);
   return fetch(
     `${togglBaseUrl}/workspaces/${workspaceId}/time_entries`, {
     method: 'POST',

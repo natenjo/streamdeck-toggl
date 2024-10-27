@@ -47,7 +47,13 @@
     </div>
     <div class="sdpi-item invalidHidden hidden" id="projectWrapper">
       <div class="sdpi-item-label">Project</div>
-      <select class="sdpi-item-value select" id="pid" onchange="sendSettings()">
+      <select class="sdpi-item-value select" id="pid" onchange="setProject()">
+        <option value="0"></option>
+      </select>
+    </div>
+    <div class="sdpi-item invalidHidden hidden" id="taskWrapper">
+      <div class="sdpi-item-label">Task</div>
+      <select class="sdpi-item-value select" id="tid" onchange="sendSettings()">
         <option value="0"></option>
       </select>
     </div>
