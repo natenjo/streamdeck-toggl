@@ -1,3 +1,13 @@
+
+# ${\color{red}Changes \space  in \space  this \space  repository:}$
+
+
+- Branch Do not monitor Description/Activity/Entry Name, see: https://github.com/blueshiftone/streamdeck-toggl/pull/7
+
+<br/><br/><br/><br/>
+
+# Original readme from [upstream](https://github.com/blueshiftone/streamdeck-toggl):
+-----------------------
 # Hassle-free time tracking using [Elgato Stream Deck](https://www.elgato.com/en/gaming/stream-deck) and [Toggl Track](https://toggl.com/track/)
 
 This repository is a fork to continue development of https://github.com/tobimori/streamdeck-toggl which has been discontinued and archived. Note that the Toggl plugin in the Stream Deck marketplace is the old plugin that is no longer maintained.
